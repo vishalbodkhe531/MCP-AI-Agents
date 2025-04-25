@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
-// import { createPost } from "./mcp.tool.js";
 import { z } from "zod";
+import { createPost } from "./mcp.tool.mjs";
 
 const server = new McpServer({
   name: "example-server",
@@ -31,17 +31,27 @@ server.tool(
   }
 );
 
-// server.tool(
-//   "createPost",
-//   "Create a post on X formally known as Twitter ",
-//   {
-//     status: z.string(),
-//   },
-//   async (arg: { status: string }) => {
-//     const { status } = arg;
-//     return createPost(status);
-//   }
-// );
+server.tool(
+  "createPost",
+  "Create a post on X (formerly Twitter)",
+  {
+    status: z.string(),
+  },
+  async (arg: { status: string }) => {
+    const { status } = arg;
+    console.log("status : ", status);
+    const result = await createPost(status);
+    console.log("result : ", result);
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: result.content[0].text,
+        },
+      ],
+    };
+  }
+)
 
 const transports: Record<string, SSEServerTransport> = {}; // useing this SSEServerTransport  client can connect to the server
 
@@ -67,3 +77,5 @@ app.post("/messages", async (req: Request, res: Response) => {
 app.listen(3001, () => {
   console.log("Server is running on http://localhost:3001");
 });
+
+// create an post on X with topic AI agent making coding easy.

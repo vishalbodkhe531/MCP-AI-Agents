@@ -7,6 +7,7 @@ import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
 config();
 
+
 const chatHistory: Array<{
   role: "user" | "model";
   parts: { text: string; type: "text" }[];
