@@ -1,6 +1,6 @@
-import express, { Request, Response } from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+import express, { Request, Response } from "express";
 import { z } from "zod";
 import { createPost } from "./mcp.tool.mjs";
 
@@ -32,6 +32,66 @@ server.tool(
 );
 
 server.tool(
+  "subTwoNumbers",
+  "Subtract two numbers",
+  {
+    a: z.number(),
+    b: z.number(),
+  },
+  async (arg: { a: number; b: number }) => {
+    const { a, b } = arg;
+    return {
+      content: [
+        {
+          type: "text",
+          text: `The sub of ${a} and ${b} is ${a - b}`,
+        },
+      ],
+    };
+  }
+);
+
+server.tool(
+  "multiplyTwoNumbers",
+  "Multiply Two Numbers",
+  {
+    a: z.number(),
+    b: z.number(),
+  },
+  async (arg: { a: number; b: number }) => {
+    const { a, b } = arg;
+    return {
+      content: [
+        {
+          type: "text",
+          text: `The multiplication of ${a} and ${b} is ${a * b}`,
+        },
+      ],
+    };
+  }
+);
+
+server.tool(
+  "divideTwoNumbers",
+  "Divide Two Numbers",
+  {
+    a: z.number(),
+    b: z.number(),
+  },
+  async (arg: { a: number; b: number }) => {
+    const { a, b } = arg;
+    return {
+      content: [
+        {
+          type: "text",
+          text: `The division of ${a} and ${b} is ${a / b}`,
+        },
+      ],
+    };
+  }
+);
+
+server.tool(
   "createPost",
   "Create a post on X (formerly Twitter)",
   {
@@ -51,7 +111,7 @@ server.tool(
       ],
     };
   }
-)
+);
 
 const transports: Record<string, SSEServerTransport> = {}; // useing this SSEServerTransport  client can connect to the server
 
